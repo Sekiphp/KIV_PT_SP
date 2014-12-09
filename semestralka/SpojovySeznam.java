@@ -1,5 +1,7 @@
 package semestralka;
 
+import java.util.ArrayList;
+
 
 public class SpojovySeznam {
 	
@@ -66,6 +68,19 @@ public class SpojovySeznam {
 			}
 		}
 		return pom;
+	}
+	
+	public ArrayList<Objednavka> odeber(int[] indexyHospod){
+		ArrayList<Objednavka> list = new ArrayList<Objednavka>();
+		if(indexyHospod != null){
+			for(int i = 0; i<indexyHospod.length; i++){
+				Objednavka pom = odeber(indexyHospod[i] - 1);
+				if(pom != null){
+					list.add(pom);
+				}
+			}
+		}
+		return list;
 	}
 	
 	public void vypis(){

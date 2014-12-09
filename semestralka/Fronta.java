@@ -36,9 +36,13 @@ public class Fronta {
 	
 	public void odeber(){
 		if(prvni != null){
-			prvni = prvni.dalsi;
-			prvni.predchozi.dalsi = null;
-			prvni.predchozi = null;
+			if(prvni.dalsi != null){
+				prvni = prvni.dalsi;
+				prvni.predchozi.dalsi = null;
+				prvni.predchozi = null;
+			}else{
+				prvni = null;
+			}
 		}
 	}
 	

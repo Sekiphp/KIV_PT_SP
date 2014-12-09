@@ -106,33 +106,44 @@ public class VystupSoubor {
 	 * @param index_hospody Index hospody v globalnim poli hospod (trida Hlavni)
 	 * @throws IOException Chyba cteni/zapisu do souboru
 	 */
-	public void vlozHospodu(int index_hospody) throws IOException{
-		Hospoda h = Hlavni.hospody[index_hospody];
-		String typ = (h.typ == 'T') ? "hl" : "sudu";
-		String row = "<tr class='row'>"
-				+ "<td rowspan='2'>Hospoda" + h.oznaceni + "</td>"
-				+ "<td rowspan='2'>Oblast " + h.region + "</td>"
-				+ "<td rowspan='2'>" + h.x + "," + h.y + "</td>"
-				+ "<td>" + h.mnozstvi + " " + typ + " (" + h.hodina +"h)</td>"
-				+ "<td>? hl</td>"
-				+ "<td>? hl</td>"
-				+ "<td>? hl</td>"
-				+ "<td>? hl</td>"
-				+ "<td>? hl</td>"
-				+ "<td>? hl</td>"
-				+ "<td rowspan='2'>sum hl</td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td>" + h.obslouzeno_kdy + "</td>"
-				+ "<td></td>"
-				+ "<td></td>"
-				+ "<td></td>"
-				+ "<td></td>"
-				+ "<td></td>"
-				+ "<td></td>"
-				+ "</tr>";
-		bw.write(row);
-		bw.newLine();	
+	public void vlozHospody() throws IOException{
+		for(int i = 0; i < 4000; i++){
+			Hospoda h = Hlavni.hospody[i];
+			
+			//int casyObjednani[] = new int[7];
+			//int casyDoruceni[] = new int[7];
+			//int poctySudu[] = new int[7];
+			
+			// String typ = (h.typ == 'T') ? "hl" : "sudu";
+			String row = "<tr class='row'>"
+					+ "<td rowspan='2'>Hospoda" + h.oznaceni + "</td>"
+					+ "<td rowspan='2'>Oblast " + h.region + "</td>"
+					+ "<td rowspan='2'>" + h.x + "," + h.y + "</td>"
+					+ "<td>" +  h.poctySudu[0] + "</td>"
+					+ "<td>" +  h.poctySudu[1] + " </td>"
+					+ "<td>" +  h.poctySudu[2] + " </td>"
+					+ "<td>" +  h.poctySudu[3] + " </td>"
+					+ "<td>" +  h.poctySudu[4] + " </td>"
+					+ "<td>" +  h.poctySudu[5] + " </td>"
+					+ "<td>" +  h.poctySudu[6] + " </td>"
+					+ "<td rowspan='2'>sum hl</td>"
+					+ "</tr>"
+					+ "<tr>";
+					for(int j = 0; j < 6; j++){
+						row += "<td>" +  Math.abs(h.casyObjednani[j] - h.casyDoruceni[j]) + "</td>";
+						
+					}
+					/*+ "<td>" +  h.casyObjednani[0] + "<br>" +  h.casyDoruceni[0] + "<br>" +  (h.casyDoruceni[0]-  h.casyObjednani[0]) + "</td>"
+					+ "<td>" +  h.casyObjednani[1] + "<br>" +  h.casyDoruceni[1] + "</td>"
+					+ "<td>" +  h.casyObjednani[2] + "<br>" +  h.casyDoruceni[2] + "</td>"
+					+ "<td>" +  h.casyObjednani[3] + "<br>" +  h.casyDoruceni[3] + "</td>"
+					+ "<td>" +  h.casyObjednani[4] + "<br>" +  h.casyDoruceni[4] + "</td>"
+					+ "<td>" +  h.casyObjednani[5] + "<br>" +  h.casyDoruceni[5] + "</td>"
+					+ "<td>" +  h.casyObjednani[6] + "<br>" +  h.casyDoruceni[6] + "</td>"*/
+					row += "</tr>";
+			bw.write(row);
+			bw.newLine();	
+		}
 	}
 	
 	/**

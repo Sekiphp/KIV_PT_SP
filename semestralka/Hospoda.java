@@ -1,47 +1,26 @@
 package semestralka;
 
-public class Hospoda {
+public class Hospoda extends Stavba{
 	
-	public int oznaceni;
-	public int x;
-	public int y;
-	public int region;
-	public char typ;
-	/** Ktery den bylo objednano */
-	public int den = 0;
-	/** V jakou hodinu bylo objednano */
-	public int hodina = 0;
-	/** Mnozstvi v sudech/hl - dle atributu typ */
-	public int mnozstvi = 0;
+	int region;
+	char typ;
 	
-	public String obslouzeno_kdy = "ne dnes";
+	int casyObjednani[] = new int[7];
+	int casyDoruceni[] = new int[7];
+	int poctySudu[] = new int[7];
+	String[] auta = new String[7];
 	
 	public Hospoda(int oznaceni, int x, int y, char typ, int region){
-		this.oznaceni = oznaceni;
-		this.x = x;
-		this.y = y;
+		super(oznaceni, x, y);
 		this.typ = typ;
 		this.region = region;
 	}
-	
-	/**
-	 * Nastavi cas objednavky
-	 * @param den Den simulace
-	 * @param hodina Hodina simulace
-	 * @return 
-	 */
-	public void setCasObjednavky(int den, int hodina){
-		this.den = den;
-		this.hodina = hodina;
+		
+	public void setDenniData(int den, Objednavka x){
+		casyObjednani[den] = x.casPrijetiObjednavky;
+		casyDoruceni[den] = x.casDoruceni;
+		poctySudu[den] = x.mnozstvi;
+		auta[den] = x.obsluhujiciAuto;
 	}
-	
-	/**
-	 * Nastavi mnozstvi piva kolik je objednano
-	 * @param mnozstvi Mnozstvi piva kolik je objednano
-	 */
-	public void setMnozstvi(int mnozstvi){
-		this.mnozstvi = mnozstvi;
-	}
-
 	
 }

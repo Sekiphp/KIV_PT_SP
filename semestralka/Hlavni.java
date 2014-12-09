@@ -10,9 +10,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * 
@@ -38,6 +41,8 @@ public class Hlavni extends JFrame {
 	public static TextFieldDemo jtf;
 	/** Jedina instance casovace pro rizeni programu */
 	private static final Casovac casovac = new Casovac();
+	
+	static ArrayList<Objednavka> manualniObjednavky = new ArrayList<Objednavka>();
 
 	public static Hospoda[] hospody;
 	public static Prekladiste[] prekladiste;		
@@ -81,14 +86,10 @@ public class Hlavni extends JFrame {
 
 		// Menu > Program
 		JMenu jMenu1 = new JMenu("Program");
-		JMenuItem jMenuItem2 = new JMenuItem("Nastavení");
 		JMenuItem jMenuItem3 = new JMenuItem("Konec");
 		jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-		jMenuItem2.setIcon(new ImageIcon(getClass().getResource("Gear.png")));
 		jMenuItem3.setIcon(new ImageIcon(getClass().getResource("shutdown.png")));
 
-		jMenu1.add(jMenuItem2);
-		jMenu1.addSeparator();
 		jMenu1.add(jMenuItem3);
 		
 		// Menu > Simulace
@@ -127,12 +128,7 @@ public class Hlavni extends JFrame {
 		// Pridani listeneru pro obsluhu menu
 		jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				// pridejObjednavku(evt);
-			}
-		});
-		jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				new Nastaveni();
+				pridejObjednavku();
 			}
 		});
 		jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -205,6 +201,48 @@ public class Hlavni extends JFrame {
 		
 	}
 	
+	private void pridejObjednavku(){
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setSize(400, 200);
+		frame.setLayout(new FlowLayout());
+		
+		final JTextField f1 = new JTextField("lamo");
+		//f1.setSize(100, 20);
+		final JTextField f2 = new JTextField("jfiowejhfioe");
+		JButton b = new JButton("Objednej!");
+		
+		frame.add(f1);
+		frame.add(f2);
+		frame.add(b);
+		
+		frame.setVisible(true);
+		
+		b.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				String pom1 = f1.getText();
+				String pom2 = f2.getText();
+				int hospoda = 0;
+				int mnozstvi = 0;
+				try{
+					hospoda = Integer.valueOf(pom1);
+					mnozstvi = Integer.valueOf(pom2);
+					if(hospoda >= 1 && hospoda <= 4000 && mnozstvi >= 1 && mnozstvi <= 6){
+						Objednavka nova = new Objednavka(mnozstvi, hospoda - 1);
+						nova.casPrijetiObjednavky = Casovac.minut;
+						manualniObjednavky.add(nova);
+					}else{
+						System.out.println("Error");
+					}
+				}catch(Exception E){
+					System.out.println("Error");
+				}
+			}
+		});
+		
+	}
+	
 	/**
 	 * Provede vynulovani Timeru, vymaze TextField a smaze vystupni soubory
 	 */
@@ -227,7 +265,7 @@ public class Hlavni extends JFrame {
      * Zastavi nebo znovuzapne sumulaci
      */
     private void simulaceStartStop(){
-    	if(Casovac.den == 7 && Casovac.hodina == 23 && Casovac.minuta == 59){
+    	if(Casovac.minut == 10080){
     		String title = "KIV/PT Chmelokvas - Chyba";
     		String message = ""
     				+ "Chyba - nelze pokraèovat v simulaci, je nutno provést restart!";
@@ -253,7 +291,7 @@ public class Hlavni extends JFrame {
     		JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);    		
     	}
     	else{
-    		if(Casovac.den == 7 && Casovac.hodina == 23 && Casovac.minuta == 60){
+    		if(Casovac.minut == 10080){
         		String title = "KIV/PT Chmelokvas - Chyba";
         		String message = ""
         				+ "Simulace už dobìhla na konec!!!";
@@ -275,7 +313,7 @@ public class Hlavni extends JFrame {
     	Container c = new Container();
     	c.setLayout(new FlowLayout());
     	
-    	c.add(new Platno(prekladiste, hospody, floydWarshall, floydWarshall));
+    	c.add(new Platno());
     	
     	return c;
     }

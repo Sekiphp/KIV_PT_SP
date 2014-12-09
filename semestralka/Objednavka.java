@@ -2,31 +2,35 @@ package semestralka;
 
 public class Objednavka {
 	
+	final double RYCHLOST;
+	
 	int mnozstvi;
 	int indexHospody;
 	int vzdalenost;
-	double casDoruceni;
+	int casDoruceni; // doba cesty v minutach, ta bude pozdeji upravena na cas doruceni
+	int casPrijetiObjednavky;
+	
+	String obsluhujiciAuto;
 	
 	Objednavka dalsi;
 	Objednavka predchozi;
 	
-	/** Rychlost zavisla na typu hospody */
-	int RYCHLOST; 
-	
-	public Objednavka(int mnozstvi, int indexHospody, int vzdalenost){
-		RYCHLOST = 60;
-		if(Hlavni.hospody[indexHospody].typ == 'S'){
-			RYCHLOST = 70;
-		}
-		
-		Hlavni.hospody[indexHospody].mnozstvi = mnozstvi;
-		
+	public Objednavka(int mnozstvi, int indexHospody){
 		this.mnozstvi = mnozstvi;
 		this.indexHospody = indexHospody;
-		this.vzdalenost = vzdalenost;
-		this.casDoruceni = this.vzdalenost / (double)RYCHLOST;
-		this.dalsi = null;
-		this.predchozi = null;
+		int region = 0;
+		if(Hlavni.hospody[indexHospody].typ == 'S'){
+			region = Hlavni.hospody[indexHospody].region;
+			RYCHLOST = 70.0;
+		}else{
+			RYCHLOST = 60.0;
+		}
+		vzdalenost = Hlavni.floydWarshall[region][indexHospody+9];
+		casDoruceni = (int)((vzdalenost/RYCHLOST) * 60);
+		casPrijetiObjednavky = 0;
+		obsluhujiciAuto = "";
+		dalsi = null;
+		predchozi = null;
 	}
 	
 }
